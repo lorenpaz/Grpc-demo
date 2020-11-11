@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package com.lorenzo;
+
+option java_package = "com.lorenzo.spacestation.generated";
+option java_outer_classname = "SpaceStationOuterClass";
+option java_multiple_files = true;
+
+message Captain {
+    string name = 1;
+    enum RaceType {
+        FURRY = 0;
+        TALL_WOODEN = 1;
+        SMALL_ROUND = 2;
+    }
+    RaceType race = 2;
+}
+message SpaceShip {
+    string name = 1;
+    int32 crew = 2;
+    string cargo = 3;
+}
+message SpaceStation {
+    Captain captain = 1;
+    repeated SpaceShip spaceships = 2;
+}

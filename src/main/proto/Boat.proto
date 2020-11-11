@@ -1,0 +1,19 @@
+syntax = "proto3";
+package com.lorenzo.boat.api;
+
+option java_package = "com.lorenzo.api";
+option java_outer_classname = "BoatProtos";
+option java_multiple_files = true;
+
+  message Boat {
+    string model = 1;
+    string captain = 2;
+
+    int32 fuel = 3;
+    CargoType cargo = 4;
+
+    enum CargoType {
+      FRUIT = 0;
+      WEAPONS = 1;
+    }
+}
