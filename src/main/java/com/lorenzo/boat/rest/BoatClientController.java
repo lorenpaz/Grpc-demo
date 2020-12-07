@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,5 +40,12 @@ public class BoatClientController {
             log.info("Wow a byte: " + b);
         }
         return exchange.getBody();
+    }
+
+    @GetMapping(value = "/api/v2/client")
+    public String boatVersionTwo() {
+        Boat boat = restTemplate.getForObject("http://localhost:8080/api/v2/boat", Boat.class);
+        log.info("boat: captain {}, fuel {}, model {}, cargo {}", boat.getCaptain(), boat.getFuel(),boat.getModel(),boat.getCargo());
+        return "boat received..";
     }
 }
