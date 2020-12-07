@@ -7,11 +7,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -21,13 +23,19 @@ public class BoatClientController {
     private final RestTemplate restTemplate;
 
     @GetMapping(value = "/api/client")
-    public String boat() {
+    public String boat(Model model, @RequestParam Optional<String> name) {
         Boat boat = restTemplate.getForObject("http://localhost:8080/api/boat", Boat.class);
         log.info("boat: captain {}, fuel {}, model {}, cargo {}", boat.getCaptain(), boat.getFuel(),boat.getModel(),boat.getCargo());
-        return "boat received..";
+        model.addAttribute(boat);
+        if(name.isPresent())
+            model.addAttribute("customName", name.get());
+        else
+            log.warn("name parameter not provided");
+        return "boat.html";
     }
 
     @GetMapping(value = "/api/client/bytes")
+    @ResponseBody
     public byte[] boatBytes() {
         RequestEntity<byte[]> requestEntity = new RequestEntity<>(null, HttpMethod.GET,
         URI.create("http://localhost:8080/api/boat/"),
